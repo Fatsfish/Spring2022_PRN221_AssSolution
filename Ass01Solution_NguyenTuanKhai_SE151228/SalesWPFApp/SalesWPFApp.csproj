@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2" />
+    <PackageReference Include="Nancy" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BusinessObject\BusinessObject.csproj" />
+    <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Members - Copy %282%29.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Members.xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Members - Copy - Copy.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Members - Copy.xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Members - Copy.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Members.xaml.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

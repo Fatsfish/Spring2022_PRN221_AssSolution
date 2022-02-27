@@ -1,0 +1,25 @@
+﻿@page
+@model Ass02Solution_NguyenTuanKhai_SE151228.Pages.Categories.DetailsModel
+
+<div>
+    <h4>Catergory</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Catergory.CategoryName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Catergory.CategoryName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Catergory.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Catergory.Description)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Catergory.CategoryId">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

@@ -1,0 +1,30 @@
+﻿@page
+@model Ass02Solution_NguyenTuanKhai_SE151228.Pages.Products.ImagesModel
+@{
+}
+<h4>Product</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <a href="/Images" rel="noopener noreferrer" target="_blank">Images Browsing</a>
+                <label class="control-label">Please make sure your files don't have the same name as the previous files as it will overide them!</label>
+                <label asp-for="@Model.file" class="control-label"></label>
+                <input asp-for="@Model.file" class="form-control" />
+                <span asp-validation-for="@Model.file" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
