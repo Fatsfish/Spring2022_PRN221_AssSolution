@@ -7,4 +7,31 @@
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <a class="nav-link text-dark" style="right" asp-page="/Login" asp-page-handler="Logout">Logout</a>
+</div>
+<div class="card-columns">
+    @foreach (var item in Model.Product)
+    {
+        <div class="card">
+            <img class="card-img-top" src="@Url.Content("~/Images/" + item.ProductImage)" alt="@Html.DisplayFor(modelItem => item.ProductName)">
+
+            <div class="card-body">
+                <h5 class="card-title">
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </h5>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <a href="#" class="btn btn-primary">Order now</a>
+                <a asp-page="./Details" asp-route-id="@item.ProductId">Details</a>
+
+            </div>
+        </div>
+
+        //@Html.DisplayFor(modelItem => item.UnitPrice)
+
+        //@Html.DisplayFor(modelItem => item.QuantityPerUnit)
+
+        //@Html.DisplayFor(modelItem => item.Category.CategoryName)
+
+        //@Html.DisplayFor(modelItem => item.Supplier.Address)
+    }
 </div>

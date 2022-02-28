@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Ass02Solution_NguyenTuanKhai_SE151228.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
-using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 namespace Ass02Solution_NguyenTuanKhai_SE151228.Pages
@@ -12,14 +11,20 @@ namespace Ass02Solution_NguyenTuanKhai_SE151228.Pages
     {
         private readonly ILogger<IndexModel> _logger;
 
-        public IndexModel(ILogger<IndexModel> logger)
+        private readonly Ass02Solution_NguyenTuanKhai_SE151228.Models.PizzaStoreDBAssignmentContext _context;
+
+        public IndexModel(Ass02Solution_NguyenTuanKhai_SE151228.Models.PizzaStoreDBAssignmentContext context)
         {
-            _logger = logger;
+            _context = context;
         }
 
-        public void OnGet()
-        {
+        public IList<Product> Product { get; set; }
 
+        public async Task OnGetAsync()
+        {
+            Product = await _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.Supplier).ToListAsync();
         }
     }
 }

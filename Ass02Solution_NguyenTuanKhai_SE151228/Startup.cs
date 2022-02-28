@@ -1,17 +1,13 @@
 using Ass02Solution_NguyenTuanKhai_SE151228.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Ass02Solution_NguyenTuanKhai_SE151228
 {
@@ -27,6 +23,9 @@ namespace Ass02Solution_NguyenTuanKhai_SE151228
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSession(options=> { options.IdleTimeout = TimeSpan.FromMinutes(30); });
+            services.AddMvc().AddSessionStateTempDataProvider();
+            services.AddHttpContextAccessor();
             services.AddDirectoryBrowser();
             services.AddRazorPages();
             services.AddDbContext<PizzaStoreDBAssignmentContext>(options =>
@@ -49,7 +48,7 @@ namespace Ass02Solution_NguyenTuanKhai_SE151228
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseSession();
             app.UseRouting();
 
             var fileProvider = new PhysicalFileProvider(Path.Combine(env.WebRootPath, "images"));

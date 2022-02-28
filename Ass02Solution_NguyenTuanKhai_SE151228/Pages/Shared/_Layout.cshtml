@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor HttpContextAccessor
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -24,27 +26,52 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
                         </li>
+                        @if (@HttpContextAccessor.HttpContext.Session.GetString("role") == null || @HttpContextAccessor.HttpContext.Session.GetString("role").Equals("2"))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Shop</a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" asp-area="" asp-page="/Accounts/Index">My Profiles</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" asp-area="" asp-page="/Categories/Index">Categories</a>
+                                    <a class="dropdown-item" asp-area="" asp-page="/Products/Index">Products</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" asp-area="" asp-page="/Orders/Index">My Orders</a>
+                                </div>
+                            </li>
+                        }
+                        @if (@HttpContextAccessor.HttpContext.Session.GetString("role") != null && @HttpContextAccessor.HttpContext.Session.GetString("role").Equals("1"))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Management</a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" asp-area="" asp-page="/Accounts/Index">Accounts</a>
+                                    <a class="dropdown-item" asp-area="" asp-page="/Customers/Index">Customers</a>
+                                    <a class="dropdown-item" asp-area="" asp-page="/Orders/Index">Orders</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" asp-area="" asp-page="/Categories/Index">Categories</a>
+                                    <a class="dropdown-item" asp-area="" asp-page="/Products/Index">Products</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" asp-area="" asp-page="/Suppliers/Index">Suppliers</a>
+                                    <a class="dropdown-item" href="/Images" rel="noopener noreferrer" target="_blank">Images</a>
+                                </div>
+                            </li>
+                        }
+                        @if (@HttpContextAccessor.HttpContext.Session.GetString("username") != null)
+                        {
+                            var t = @HttpContextAccessor.HttpContext.Session.GetString("username");
+                            <p class="nav-link text-dark" style="right">Welcome @t</p>
+                            <a class="nav-link text-dark" style="right" asp-page="/Login" asp-page-handler="Logout">Logout</a>
+                        }
+                        @if (@HttpContextAccessor.HttpContext.Session.GetString("username") == null)
+                        {
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Accounts/Index">Accounts</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Login">Login</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Categories/Index">Categories</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Register">Register</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Customers/Index">Customers</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Orders/Index">Orders</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Products/Index">Products</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Suppliers/Index">Suppliers</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" href="/Images" rel="noopener noreferrer" target="_blank">Images</a>
-                        </li>
+                        }
                     </ul>
                 </div>
             </div>
