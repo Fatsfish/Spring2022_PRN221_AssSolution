@@ -35,6 +35,7 @@
             @Html.DisplayNameFor(model => model.OrderDetail.Product)
         </dt>
         <dd class="col-sm-10">
+            <img src="@Url.Content("~/Images/" + Model.OrderDetail.Product.ProductImage)" onerror="if (this.src != '~/images/avatar-sign.png') this.src = '~/images/avatar-sign.png';" height="100px" width="100px" />
             @Html.DisplayFor(model => model.OrderDetail.Product.ProductImage)
         </dd>
     </dl>

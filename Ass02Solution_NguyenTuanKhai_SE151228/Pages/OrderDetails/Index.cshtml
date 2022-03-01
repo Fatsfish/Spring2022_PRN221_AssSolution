@@ -48,12 +48,16 @@
                 @Html.DisplayFor(modelItem => item.Product.ProductId)
             </td>
             <td>
+                <img src="@Url.Content("~/Images/" + item.Product.ProductImage)" onerror="if (this.src != '~/images/avatar-sign.png') this.src = '~/images/avatar-sign.png';" height="100px" width="100px" />
                 @Html.DisplayFor(modelItem => item.Product.ProductImage)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new {  OrderId=item.OrderId }, new { ProductId = item.ProductId }) 
+                @Html.ActionLink("Edit", "Edit", new { OrderId = item.OrderId }, new { ProductId = item.ProductId })|
                 @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
                 @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                <a asp-page="./Edit" asp-route-id1="@item.OrderId" asp-route-id2="@item.ProductId">Edit</a> |
+                <a asp-page="./Details" asp-route-id1="@item.OrderId" asp-route-id2="@item.ProductId">Details</a> |
+                <a asp-page="./Delete" asp-route-id1="@item.OrderId" asp-route-id2="@item.ProductId">Delete</a>
             </td>
         </tr>
 }

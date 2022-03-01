@@ -22,16 +22,16 @@ namespace Ass02Solution_NguyenTuanKhai_SE151228.Pages.OrderDetails
         [BindProperty]
         public OrderDetail OrderDetail { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(int? id1, int? id2)
         {
-            if (id == null)
+            if (id1 == null || id2==null)
             {
                 return NotFound();
             }
 
             OrderDetail = await _context.OrderDetails
                 .Include(o => o.Order)
-                .Include(o => o.Product).FirstOrDefaultAsync(m => m.OrderId == id);
+                .Include(o => o.Product).FirstOrDefaultAsync(m => m.OrderId == id1 & m.ProductId==id2);
 
             if (OrderDetail == null)
             {
@@ -59,7 +59,7 @@ namespace Ass02Solution_NguyenTuanKhai_SE151228.Pages.OrderDetails
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!OrderDetailExists(OrderDetail.OrderId))
+                if (!OrderDetailExists(OrderDetail.OrderId, OrderDetail.ProductId))
                 {
                     return NotFound();
                 }
@@ -72,9 +72,9 @@ namespace Ass02Solution_NguyenTuanKhai_SE151228.Pages.OrderDetails
             return RedirectToPage("./Index");
         }
 
-        private bool OrderDetailExists(int id)
+        private bool OrderDetailExists(int id, int id2)
         {
-            return _context.OrderDetails.Any(e => e.OrderId == id);
+            return _context.OrderDetails.Any(e => e.OrderId == id && e.ProductId==id2);
         }
     }
 }
