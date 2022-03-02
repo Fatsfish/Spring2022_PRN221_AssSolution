@@ -32,7 +32,9 @@ namespace Ass02Solution_NguyenTuanKhai_SE151228.Pages.Products
         [BindProperty]
         public IFormFile[] file { get; set; }
         public IActionResult OnGet()
-        { 
+        {
+            if (HttpContext.Session.GetInt32("id") == null || HttpContext.Session.GetString("role") == null || (HttpContext.Session.GetString("role") != null && HttpContext.Session.GetString("role").Equals("2"))) return RedirectToPage("/Login");
+
             //Fetch all files in the Folder (Directory).
             string[] filePaths = Directory.GetFiles(Path.Combine(_environment.WebRootPath, "Images"));
             //Copy File names to Model collection.

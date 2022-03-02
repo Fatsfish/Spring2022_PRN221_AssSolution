@@ -2,12 +2,19 @@
 @model Ass02Solution_NguyenTuanKhai_SE151228.Pages.OrderDetails.IndexModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Order Details";
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
-
-<h1>Index</h1>
-
+@if (@HttpContextAccessor.HttpContext.Session.GetInt32("id") == null)
+{
+    RedirectToPage("/Login");
+}
+@if (@HttpContextAccessor.HttpContext.Session.GetString("role") != null && @HttpContextAccessor.HttpContext.Session.GetString("role").Equals("2"))
+{
+    RedirectToPage("/Login");
+}
+<h1>Order Details</h1>
+<h4>@Model.msg</h4>
 <p>
     <a asp-page="Create">Create New</a>
 </p>
@@ -32,34 +39,32 @@
             <th></th>
         </tr>
     </thead>
-    <tbody>
-@foreach (var item in Model.OrderDetail) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.UnitPrice)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Quantity)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Order.OrderId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Product.ProductId)
-            </td>
-            <td>
-                <img src="@Url.Content("~/Images/" + item.Product.ProductImage)" onerror="if (this.src != '~/images/avatar-sign.png') this.src = '~/images/avatar-sign.png';" height="100px" width="100px" />
-                @Html.DisplayFor(modelItem => item.Product.ProductImage)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { OrderId = item.OrderId }, new { ProductId = item.ProductId })|
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-                <a asp-page="./Edit" asp-route-id1="@item.OrderId" asp-route-id2="@item.ProductId">Edit</a> |
-                <a asp-page="./Details" asp-route-id1="@item.OrderId" asp-route-id2="@item.ProductId">Details</a> |
-                <a asp-page="./Delete" asp-route-id1="@item.OrderId" asp-route-id2="@item.ProductId">Delete</a>
-            </td>
-        </tr>
-}
+    <tbody>@if (Model.OrderDetail != null)
+    {@foreach (var item in Model.OrderDetail)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UnitPrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Order.OrderId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Product.ProductId)
+                </td>
+                <td>
+                    <img src="@Url.Content("~/Images/" + item.Product.ProductImage)" onerror="if (this.src != '~/images/avatar-sign.png') this.src = '~/images/avatar-sign.png';" height="100px" width="100px" />
+                    @Html.DisplayFor(modelItem => item.Product.ProductImage)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id1="@item.OrderId" asp-route-id2="@item.ProductId">Edit</a> |
+                    <a asp-page="./Details" asp-route-id1="@item.OrderId" asp-route-id2="@item.ProductId">Details</a> |
+                    <a asp-page="./Delete" asp-route-id1="@item.OrderId" asp-route-id2="@item.ProductId">Delete</a>
+                </td>
+            </tr>
+    }}
     </tbody>
 </table>

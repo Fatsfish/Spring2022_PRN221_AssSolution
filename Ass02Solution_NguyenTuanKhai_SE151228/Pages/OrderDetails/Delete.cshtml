@@ -5,7 +5,14 @@
     ViewData["Title"] = "Delete";
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
-
+@if (@HttpContextAccessor.HttpContext.Session.GetInt32("id") == null)
+{
+    RedirectToPage("/Login");
+}
+@if (@HttpContextAccessor.HttpContext.Session.GetString("role") != null && @HttpContextAccessor.HttpContext.Session.GetString("role").Equals("2"))
+{
+    RedirectToPage("/Login");
+}
 <h1>Delete</h1>
 
 <h3>Are you sure you want to delete this?</h3>
@@ -39,7 +46,7 @@
             @Html.DisplayFor(model => model.OrderDetail.Product.ProductImage)
         </dd>
     </dl>
-    
+
     <form method="post">
         <input type="hidden" asp-for="OrderDetail.OrderId" />
         <input type="hidden" asp-for="OrderDetail.ProductId" />

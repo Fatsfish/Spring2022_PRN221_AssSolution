@@ -33,6 +33,8 @@ namespace Ass02Solution_NguyenTuanKhai_SE151228.Pages.Products
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+            if (HttpContext.Session.GetInt32("id") == null || HttpContext.Session.GetString("role") == null || (HttpContext.Session.GetString("role") != null && HttpContext.Session.GetString("role").Equals("2"))) return RedirectToPage("/Login");
+
             if (id == null)
             {
                 return NotFound();

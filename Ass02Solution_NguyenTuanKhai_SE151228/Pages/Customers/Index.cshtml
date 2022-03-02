@@ -1,50 +1,74 @@
 ﻿@page
 @model Ass02Solution_NguyenTuanKhai_SE151228.Pages.Customers.IndexModel
-    <h1>Customers Management</h1>
 
+@{
+    ViewData["Title"] = "Customers";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+@if (@HttpContextAccessor.HttpContext.Session.GetInt32("id") == null)
+{
+    RedirectToPage("/Login");
+}
+@if (@HttpContextAccessor.HttpContext.Session.GetString("role") != null && @HttpContextAccessor.HttpContext.Session.GetString("role").Equals("2"))
+{
+    RedirectToPage("/Login");
+}
+<h1>Customers Management</h1>
+@if (@HttpContextAccessor.HttpContext.Session.GetString("role") != null && @HttpContextAccessor.HttpContext.Session.GetString("role").Equals("1"))
+{
     <p>
         <a asp-page="Create">Create New</a>
     </p>
-    <table class="table">
-        <thead>
+}
+<h4>@Model.msg</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Customer[0].CustomerId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Customer[0].Password)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Customer[0].ContactName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Customer[0].Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Customer[0].Phone)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Customer != null)
+        {
+        @foreach (var item in Model.Customer)
+        {
             <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Customer[0].Password)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Customer[0].ContactName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Customer[0].Address)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Customer[0].Phone)
-                </th>
-                <th></th>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CustomerId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Password)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ContactName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Phone)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.CustomerId">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.CustomerId">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.CustomerId">Delete</a>
+                </td>
             </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.Customer)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Password)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ContactName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Address)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Phone)
-                    </td>
-                    <td>
-                        <a asp-page="./Edit" asp-route-id="@item.CustomerId">Edit</a> |
-                        <a asp-page="./Details" asp-route-id="@item.CustomerId">Details</a> |
-                        <a asp-page="./Delete" asp-route-id="@item.CustomerId">Delete</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+        }}
+    </tbody>
+</table>

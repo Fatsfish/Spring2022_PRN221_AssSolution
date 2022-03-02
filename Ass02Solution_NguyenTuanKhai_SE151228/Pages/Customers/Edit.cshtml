@@ -1,6 +1,13 @@
 ﻿@page
 @model Ass02Solution_NguyenTuanKhai_SE151228.Pages.Customers.EditModel
 
+@{
+    ViewData["Title"] = "Customers";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}@if (@HttpContextAccessor.HttpContext.Session.GetInt32("id") == null)
+{
+    RedirectToPage("/Login");
+}
 <h4>Customer</h4>
 <hr />
 <div class="row">
@@ -34,11 +41,12 @@
         </form>
     </div>
 </div>
-
-<div>
-    <a asp-page="./Index">Back to List</a>
-</div>
-
+@if (@HttpContextAccessor.HttpContext.Session.GetString("role") != null && @HttpContextAccessor.HttpContext.Session.GetString("role").Equals("1"))
+{
+    <div>
+        <a asp-page="./Index">Back to List</a>
+    </div>
+}
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

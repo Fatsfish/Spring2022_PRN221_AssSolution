@@ -1,6 +1,13 @@
 ﻿@page
 @model Ass02Solution_NguyenTuanKhai_SE151228.Pages.Orders.EditModel
-
+@if (@HttpContextAccessor.HttpContext.Session.GetInt32("id") == null)
+{
+    RedirectToPage("/Login");
+}
+@if (@HttpContextAccessor.HttpContext.Session.GetString("role") != null && @HttpContextAccessor.HttpContext.Session.GetString("role").Equals("2"))
+{
+    RedirectToPage("/Login");
+}
 <h4>Order</h4>
 <hr />
 <div class="row">

@@ -5,7 +5,14 @@
     ViewData["Title"] = "Create";
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
-
+@if (@HttpContextAccessor.HttpContext.Session.GetInt32("id") == null)
+{
+    RedirectToPage("/Login");
+}
+@if (@HttpContextAccessor.HttpContext.Session.GetString("role") != null && @HttpContextAccessor.HttpContext.Session.GetString("role").Equals("2"))
+{
+    RedirectToPage("/Login");
+}
 <h1>Create</h1>
 
 <h4>Account</h4>

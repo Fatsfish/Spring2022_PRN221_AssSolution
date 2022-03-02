@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Ass02Solution_NguyenTuanKhai_SE151228.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace Ass02Solution_NguyenTuanKhai_SE151228.Pages.Accounts
 {
@@ -24,6 +25,8 @@ namespace Ass02Solution_NguyenTuanKhai_SE151228.Pages.Accounts
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+            if (HttpContext.Session.GetInt32("id") == null|| HttpContext.Session.GetString("role") == null) return RedirectToPage("/Login");
+            
             if (id == null)
             {
                 return NotFound();
@@ -65,7 +68,14 @@ namespace Ass02Solution_NguyenTuanKhai_SE151228.Pages.Accounts
                 }
             }
 
-            return RedirectToPage("./Index");
+            if (HttpContext.Session.GetString("role").Equals("1"))
+            {
+                return RedirectToPage("./Index");
+            }
+            else
+            {
+                return RedirectToPage("/Index");
+            }
         }
 
         private bool AccountExists(int id)

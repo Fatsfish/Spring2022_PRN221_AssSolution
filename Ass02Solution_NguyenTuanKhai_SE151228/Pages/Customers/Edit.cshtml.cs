@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Ass02Solution_NguyenTuanKhai_SE151228.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace Ass02Solution_NguyenTuanKhai_SE151228.Pages.Customers
 {
@@ -21,7 +22,7 @@ namespace Ass02Solution_NguyenTuanKhai_SE151228.Pages.Customers
 
         [BindProperty]
         public Customer Customer { get; set; }
-
+        public Account Account { get; set; }
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
@@ -30,10 +31,23 @@ namespace Ass02Solution_NguyenTuanKhai_SE151228.Pages.Customers
             }
 
             Customer = await _context.Customers.FirstOrDefaultAsync(m => m.CustomerId == id);
+            Account = await _context.Accounts.FirstOrDefaultAsync(m => m.AccountId == id);
 
-            if (Customer == null)
+            if (Customer == null && Account ==null)
             {
                 return NotFound();
+            }
+
+            if(Customer== null && Account != null)
+            {
+                Customer = new Customer();
+                Customer.CustomerId = (int)id;
+                Customer.ContactName = Account.FullName;
+                Customer.Address = "Fill in to change address";
+                Customer.Password = Account.Password;
+                Customer.Phone = "0000000000";
+                _context.Customers.Add(Customer);
+                await _context.SaveChangesAsync();
             }
             return Page();
         }
@@ -64,8 +78,14 @@ namespace Ass02Solution_NguyenTuanKhai_SE151228.Pages.Customers
                     throw;
                 }
             }
-
-            return RedirectToPage("./Index");
+            if (HttpContext.Session.GetString("role").Equals("1"))
+            {
+                return RedirectToPage("./Index");
+            }
+            else
+            {
+                return RedirectToPage("/Index");
+            }
         }
 
         private bool CustomerExists(int id)

@@ -1,44 +1,55 @@
 ﻿@page
 @model Ass02Solution_NguyenTuanKhai_SE151228.Pages.Suppliers.IndexModel
-    <h1>Suppliers Management</h1>
-
+@if (@HttpContextAccessor.HttpContext.Session.GetInt32("id") == null)
+{
+    RedirectToPage("/Login");
+}
+@if (@HttpContextAccessor.HttpContext.Session.GetString("role") != null && @HttpContextAccessor.HttpContext.Session.GetString("role").Equals("2"))
+{
+    RedirectToPage("/Login");
+}
+<h1>Suppliers Management</h1>
+@if (@HttpContextAccessor.HttpContext.Session.GetString("role") != null && @HttpContextAccessor.HttpContext.Session.GetString("role").Equals("1"))
+{
     <p>
         <a asp-page="Create">Create New</a>
-    </p>
-    <table class="table">
-        <thead>
+    </p>}
+<h4>@Model.msg</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Supplier[0].CompanyName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Supplier[0].Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Supplier[0].Phone)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Supplier != null)
+        {@foreach (var item in Model.Supplier)
+        {
             <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Supplier[0].CompanyName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Supplier[0].Address)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Supplier[0].Phone)
-                </th>
-                <th></th>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CompanyName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Phone)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.SupplierId">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.SupplierId">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.SupplierId">Delete</a>
+                </td>
             </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.Supplier)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CompanyName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Address)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Phone)
-                    </td>
-                    <td>
-                        <a asp-page="./Edit" asp-route-id="@item.SupplierId">Edit</a> |
-                        <a asp-page="./Details" asp-route-id="@item.SupplierId">Details</a> |
-                        <a asp-page="./Delete" asp-route-id="@item.SupplierId">Delete</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+        }}
+    </tbody>
+</table>

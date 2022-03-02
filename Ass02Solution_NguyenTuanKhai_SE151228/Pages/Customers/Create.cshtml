@@ -1,6 +1,18 @@
 ﻿@page
 @model Ass02Solution_NguyenTuanKhai_SE151228.Pages.Customers.CreateModel
 
+@{
+    ViewData["Title"] = "Customers";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+@if (@HttpContextAccessor.HttpContext.Session.GetInt32("id") == null)
+{
+    RedirectToPage("/Login");
+}
+@if (@HttpContextAccessor.HttpContext.Session.GetString("role") != null && @HttpContextAccessor.HttpContext.Session.GetString("role").Equals("2"))
+{
+    RedirectToPage("/Login");
+}
 <h4>Customer</h4>
 <hr />
 <div class="row">

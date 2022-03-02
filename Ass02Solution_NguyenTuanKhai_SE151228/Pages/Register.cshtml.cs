@@ -24,7 +24,7 @@ namespace Ass02Solution_NguyenTuanKhai_SE151228.Pages
 
         [BindProperty]
         public Account Account { get; set; }
-
+        public string msg { get; set; }
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
@@ -32,11 +32,17 @@ namespace Ass02Solution_NguyenTuanKhai_SE151228.Pages
             {
                 return Page();
             }
+            if (AccountExists(Account.AccountId)) { msg = "ID has been used, please choose another ID!"; }
             Account.Type = "2";
             _context.Accounts.Add(Account);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Login");
+        }
+
+        private bool AccountExists(int id)
+        {
+            return _context.Accounts.Any(e => e.AccountId == id);
         }
     }
 }

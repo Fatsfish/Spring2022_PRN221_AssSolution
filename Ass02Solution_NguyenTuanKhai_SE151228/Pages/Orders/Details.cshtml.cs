@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Ass02Solution_NguyenTuanKhai_SE151228.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace Ass02Solution_NguyenTuanKhai_SE151228.Pages.Orders
 {
@@ -19,9 +20,12 @@ namespace Ass02Solution_NguyenTuanKhai_SE151228.Pages.Orders
         }
 
         public Order Order { get; set; }
+        public IList<OrderDetail> OrderDetail { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+            if (HttpContext.Session.GetInt32("id") == null || HttpContext.Session.GetString("role") == null || (HttpContext.Session.GetString("role") != null && HttpContext.Session.GetString("role").Equals("2"))) return RedirectToPage("/Login");
+
             if (id == null)
             {
                 return NotFound();
@@ -34,7 +38,13 @@ namespace Ass02Solution_NguyenTuanKhai_SE151228.Pages.Orders
             {
                 return NotFound();
             }
+
+            var l1 = from s in _context.OrderDetails.Include(o => o.Order).Include(o=>o.Product)
+                     select s;
+            OrderDetail = await l1.Where(o => o.OrderId == id).ToListAsync();
+
             return Page();
+
         }
     }
 }

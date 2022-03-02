@@ -1,6 +1,13 @@
 ﻿@page
 @model Ass02Solution_NguyenTuanKhai_SE151228.Pages.Products.DetailsModel
-
+@if (@HttpContextAccessor.HttpContext.Session.GetInt32("id") == null)
+{
+    RedirectToPage("/Login");
+}
+@if (@HttpContextAccessor.HttpContext.Session.GetString("role") != null && @HttpContextAccessor.HttpContext.Session.GetString("role").Equals("2"))
+{
+    RedirectToPage("/Login");
+}
 <div>
     <h4>Product</h4>
     <hr />
@@ -45,7 +52,19 @@
         </dd>
     </dl>
 </div>
-<div>
-    <a asp-page="./Edit" asp-route-id="@Model.Product.ProductId">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
-</div>
+
+@if (@HttpContextAccessor.HttpContext.Session.GetString("role") != null && @HttpContextAccessor.HttpContext.Session.GetString("role").Equals("1"))
+{
+    <div>
+        <a asp-page="./Edit" asp-route-id="@Model.Product.ProductId">Edit</a> |
+        <a asp-page="./Index">Back to List</a>
+    </div>
+}
+
+@if (@HttpContextAccessor.HttpContext.Session.GetString("role") == null||(@HttpContextAccessor.HttpContext.Session.GetString("role") != null && @HttpContextAccessor.HttpContext.Session.GetString("role").Equals("2")))
+{
+    <div>
+        <a asp-page="/Products/Index">Back to Products</a> |
+        <a asp-page="/Index">Back to Home</a>
+    </div>
+}

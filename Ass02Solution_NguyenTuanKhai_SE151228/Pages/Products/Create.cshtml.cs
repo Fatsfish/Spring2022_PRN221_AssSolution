@@ -27,6 +27,8 @@ namespace Ass02Solution_NguyenTuanKhai_SE151228.Pages.Products
 
         public IActionResult OnGet()
         {
+            if (HttpContext.Session.GetInt32("id") == null || HttpContext.Session.GetString("role") == null || (HttpContext.Session.GetString("role") != null && HttpContext.Session.GetString("role").Equals("2"))) return RedirectToPage("/Login");
+
             ViewData["CategoryId"] = new SelectList(_context.Catergories, "CategoryId", "CategoryName");
             ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "Address");
             //Fetch all files in the Folder (Directory).

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Ass02Solution_NguyenTuanKhai_SE151228.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace Ass02Solution_NguyenTuanKhai_SE151228.Pages.Orders
 {
@@ -20,7 +21,9 @@ namespace Ass02Solution_NguyenTuanKhai_SE151228.Pages.Orders
 
         public IActionResult OnGet()
         {
-        ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "Address");
+            if (HttpContext.Session.GetInt32("id") == null || HttpContext.Session.GetString("role") == null || (HttpContext.Session.GetString("role") != null && HttpContext.Session.GetString("role").Equals("2"))) return RedirectToPage("/Login");
+
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "Address");
             return Page();
         }
 

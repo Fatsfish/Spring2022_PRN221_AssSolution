@@ -1,13 +1,35 @@
 ﻿@page
 @model Ass02Solution_NguyenTuanKhai_SE151228.Pages.Products.IndexModel
+@if ((@HttpContextAccessor.HttpContext.Session.GetString("role") != null && @HttpContextAccessor.HttpContext.Session.GetString("role").Equals("2")) || @HttpContextAccessor.HttpContext.Session.GetString("role") == null)
+{
+    <h1>Products</h1>}
+@if (@HttpContextAccessor.HttpContext.Session.GetString("role") != null && @HttpContextAccessor.HttpContext.Session.GetString("role").Equals("1"))
+{<h1>Products Management</h1>
 
-<h1>Products Management</h1>
+    <p>
+        <a asp-page="Create">Create New</a><br />
+        <a href="/Images" rel="noopener noreferrer" target="_blank">Images Browsing</a><br />
+        <a asp-page="./Images" rel="noopener noreferrer">Images Management</a>
+    </p>}
 
-<p>
-    <a asp-page="Create">Create New</a><br />
-    <a href="/Images" rel="noopener noreferrer" target="_blank">Images Browsing</a><br />
-    <a asp-page="./Images" rel="noopener noreferrer">Images Management</a>
-</p>
+@{
+    ViewData["Title"] = "Products";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+<form>
+    <p>
+        Category:
+        <select asp-for="Category" asp-items="Model.Categories">
+            <option value="">All</option>
+        </select>
+        Supplier:
+        <select asp-for="Supplier" asp-items="Model.Suppliers">
+            <option value="">All</option>
+        </select>
+        Search by product name: <input type="text" asp-for="SearchString" />
+        <input type="submit" value="Search and filter" />
+    </p>
+</form>
 <table class="table">
     <thead>
         <tr>
@@ -29,7 +51,10 @@
             <th>
                 @Html.DisplayNameFor(model => model.Product[0].Supplier)
             </th>
-            <th></th>
+            @if (@HttpContextAccessor.HttpContext.Session.GetString("role") != null && @HttpContextAccessor.HttpContext.Session.GetString("role").Equals("1"))
+            {
+                <th></th>
+            }
         </tr>
     </thead>
     <tbody>
@@ -56,11 +81,14 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Supplier.Address)
                 </td>
-                <td>
-                    <a asp-page="./Edit" asp-route-id="@item.ProductId">Edit</a> |
-                    <a asp-page="./Details" asp-route-id="@item.ProductId">Details</a> |
-                    <a asp-page="./Delete" asp-route-id="@item.ProductId">Delete</a>
-                </td>
+                @if (@HttpContextAccessor.HttpContext.Session.GetString("role") != null && @HttpContextAccessor.HttpContext.Session.GetString("role").Equals("1"))
+                {
+                    <td>
+                        <a asp-page="./Edit" asp-route-id="@item.ProductId">Edit</a> |
+                        <a asp-page="./Details" asp-route-id="@item.ProductId">Details</a> |
+                        <a asp-page="./Delete" asp-route-id="@item.ProductId">Delete</a>
+                    </td>
+                }
             </tr>
         }
     </tbody>

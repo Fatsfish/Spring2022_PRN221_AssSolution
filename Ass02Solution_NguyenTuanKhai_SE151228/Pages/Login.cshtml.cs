@@ -33,7 +33,7 @@ namespace Ass02Solution_NguyenTuanKhai_SE151228.Pages
 
         [BindProperty]
         public Account Account { get; set; }
-        public String msg;
+        public String msg { get; set; }
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
@@ -58,7 +58,6 @@ namespace Ass02Solution_NguyenTuanKhai_SE151228.Pages
                 HttpContext.Session.SetString("role", Account.Type);
                 HttpContext.Session.SetInt32("id", Account.AccountId);
                 HttpContext.Session.SetString("username", Account.UserName);
-                
             }
             if (Account.Type.Equals("1"))
             {

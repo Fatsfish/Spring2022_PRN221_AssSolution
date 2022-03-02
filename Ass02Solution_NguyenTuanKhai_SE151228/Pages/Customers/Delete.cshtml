@@ -1,6 +1,18 @@
 ﻿@page
 @model Ass02Solution_NguyenTuanKhai_SE151228.Pages.Customers.DeleteModel
 
+@{
+    ViewData["Title"] = "Customers";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+@if (@HttpContextAccessor.HttpContext.Session.GetInt32("id") == null)
+{
+    RedirectToPage("/Login");
+}
+@if (@HttpContextAccessor.HttpContext.Session.GetString("role") != null && @HttpContextAccessor.HttpContext.Session.GetString("role").Equals("2"))
+{
+    RedirectToPage("/Login");
+}
 <h3>Are you sure you want to delete this?</h3>
 <div>
     <h4>Customer</h4>
@@ -31,7 +43,7 @@
             @Html.DisplayFor(model => model.Customer.Phone)
         </dd>
     </dl>
-    
+
     <form method="post">
         <input type="hidden" asp-for="Customer.CustomerId" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
