@@ -1,6 +1,8 @@
+using Ass03Solution_NguyenTuanKhai_SE151228.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,6 +26,10 @@ namespace Ass03Solution_NguyenTuanKhai_SE151228
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddSignalR();
+            services.AddDbContext<PostDBAssignmentContext>(options =>
+            options.UseSqlServer(Configuration.GetConnectionString("PostDB")));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,6 +57,7 @@ namespace Ass03Solution_NguyenTuanKhai_SE151228
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapHub<SignalrServer>("/signalrServer");
             });
         }
     }
