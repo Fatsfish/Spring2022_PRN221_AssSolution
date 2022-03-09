@@ -1,5 +1,6 @@
 using System;
 
+
 namespace Ass03Solution_NguyenTuanKhai_SE151228.Models
 {
     public class ErrorViewModel

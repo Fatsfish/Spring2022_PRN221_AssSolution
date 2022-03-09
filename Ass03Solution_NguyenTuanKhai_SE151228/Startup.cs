@@ -27,8 +27,9 @@ namespace Ass03Solution_NguyenTuanKhai_SE151228
         {
             services.AddControllersWithViews();
             services.AddSignalR();
-            services.AddDbContext<PostDBAssignmentContext>(options =>
+            services.AddDbContext<SignalRAssignmentDB03Context>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("PostDB")));
+
 
         }
 

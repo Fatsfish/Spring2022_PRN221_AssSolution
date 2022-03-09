@@ -11,9 +11,9 @@ namespace Ass03Solution_NguyenTuanKhai_SE151228.Controllers
 {
     public class AppUsersController : Controller
     {
-        private readonly PostDBAssignmentContext _context;
+        private readonly SignalRAssignmentDB03Context _context;
 
-        public AppUsersController(PostDBAssignmentContext context)
+        public AppUsersController(SignalRAssignmentDB03Context context)
         {
             _context = context;
         }
@@ -53,7 +53,7 @@ namespace Ass03Solution_NguyenTuanKhai_SE151228.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserId,Password,Address,FullName,Email")] AppUser appUser)
+        public async Task<IActionResult> Create([Bind("UserId,FullName,Address,Password,Email")] AppUser appUser)
         {
             if (ModelState.IsValid)
             {
@@ -85,7 +85,7 @@ namespace Ass03Solution_NguyenTuanKhai_SE151228.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UserId,Password,Address,FullName,Email")] AppUser appUser)
+        public async Task<IActionResult> Edit(int id, [Bind("UserId,FullName,Address,Password,Email")] AppUser appUser)
         {
             if (id != appUser.UserId)
             {

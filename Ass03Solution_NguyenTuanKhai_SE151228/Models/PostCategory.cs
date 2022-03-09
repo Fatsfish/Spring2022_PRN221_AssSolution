@@ -5,9 +5,9 @@ using System.Collections.Generic;
 
 namespace Ass03Solution_NguyenTuanKhai_SE151228.Models
 {
-    public partial class Category
+    public partial class PostCategory
     {
-        public Category()
+        public PostCategory()
         {
             Posts = new HashSet<Post>();
         }

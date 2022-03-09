@@ -11,9 +11,9 @@ namespace Ass03Solution_NguyenTuanKhai_SE151228.Controllers
 {
     public class PostsController : Controller
     {
-        private readonly PostDBAssignmentContext _context;
+        private readonly SignalRAssignmentDB03Context _context;
 
-        public PostsController(PostDBAssignmentContext context)
+        public PostsController(SignalRAssignmentDB03Context context)
         {
             _context = context;
         }
@@ -21,8 +21,8 @@ namespace Ass03Solution_NguyenTuanKhai_SE151228.Controllers
         // GET: Posts
         public async Task<IActionResult> Index()
         {
-            var postDBAssignmentContext = _context.Posts.Include(p => p.Author).Include(p => p.Category);
-            return View(await postDBAssignmentContext.ToListAsync());
+            var signalRAssignmentDB03Context = _context.Posts.Include(p => p.Author).Include(p => p.Category);
+            return View(await signalRAssignmentDB03Context.ToListAsync());
         }
 
         // GET: Posts/Details/5
@@ -48,8 +48,8 @@ namespace Ass03Solution_NguyenTuanKhai_SE151228.Controllers
         // GET: Posts/Create
         public IActionResult Create()
         {
-            ViewData["AuthorId"] = new SelectList(_context.AppUsers, "UserId", "Address");
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName");
+            ViewData["AuthorId"] = new SelectList(_context.AppUsers, "UserId", "UserId");
+            ViewData["CategoryId"] = new SelectList(_context.PostCategories, "CategoryId", "CategoryName");
             return View();
         }
 
@@ -58,7 +58,7 @@ namespace Ass03Solution_NguyenTuanKhai_SE151228.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PostId,AuthorId,CreatedDate,UpdatedDate,Title,Content,PublishStatus,CategoryId")] Post post)
+        public async Task<IActionResult> Create([Bind("PostId,CreatedDate,UpdatedDate,Title,Content,PublishStatus,AuthorId,CategoryId")] Post post)
         {
             if (ModelState.IsValid)
             {
@@ -66,8 +66,8 @@ namespace Ass03Solution_NguyenTuanKhai_SE151228.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorId"] = new SelectList(_context.AppUsers, "UserId", "Address", post.AuthorId);
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName", post.CategoryId);
+            ViewData["AuthorId"] = new SelectList(_context.AppUsers, "UserId", "UserId", post.AuthorId);
+            ViewData["CategoryId"] = new SelectList(_context.PostCategories, "CategoryId", "CategoryName", post.CategoryId);
             return View(post);
         }
 
@@ -84,8 +84,8 @@ namespace Ass03Solution_NguyenTuanKhai_SE151228.Controllers
             {
                 return NotFound();
             }
-            ViewData["AuthorId"] = new SelectList(_context.AppUsers, "UserId", "Address", post.AuthorId);
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName", post.CategoryId);
+            ViewData["AuthorId"] = new SelectList(_context.AppUsers, "UserId", "UserId", post.AuthorId);
+            ViewData["CategoryId"] = new SelectList(_context.PostCategories, "CategoryId", "CategoryName", post.CategoryId);
             return View(post);
         }
 
@@ -94,7 +94,7 @@ namespace Ass03Solution_NguyenTuanKhai_SE151228.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PostId,AuthorId,CreatedDate,UpdatedDate,Title,Content,PublishStatus,CategoryId")] Post post)
+        public async Task<IActionResult> Edit(int id, [Bind("PostId,CreatedDate,UpdatedDate,Title,Content,PublishStatus,AuthorId,CategoryId")] Post post)
         {
             if (id != post.PostId)
             {
@@ -121,8 +121,8 @@ namespace Ass03Solution_NguyenTuanKhai_SE151228.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorId"] = new SelectList(_context.AppUsers, "UserId", "Address", post.AuthorId);
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName", post.CategoryId);
+            ViewData["AuthorId"] = new SelectList(_context.AppUsers, "UserId", "UserId", post.AuthorId);
+            ViewData["CategoryId"] = new SelectList(_context.PostCategories, "CategoryId", "CategoryName", post.CategoryId);
             return View(post);
         }
 

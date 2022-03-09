@@ -1,30 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Ass03Solution_NguyenTuanKhai_SE151228.Models;
 
 namespace Ass03Solution_NguyenTuanKhai_SE151228.Controllers
 {
-    public class CategoriesController : Controller
+    public class PostCategoriesController : Controller
     {
-        private readonly PostDBAssignmentContext _context;
+        private readonly SignalRAssignmentDB03Context _context;
 
-        public CategoriesController(PostDBAssignmentContext context)
+        public PostCategoriesController(SignalRAssignmentDB03Context context)
         {
             _context = context;
         }
 
-        // GET: Categories
+        // GET: PostCategories
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Categories.ToListAsync());
+            return View(await _context.PostCategories.ToListAsync());
         }
 
-        // GET: Categories/Details/5
+        // GET: PostCategories/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -32,39 +29,39 @@ namespace Ass03Solution_NguyenTuanKhai_SE151228.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Categories
+            var postCategory = await _context.PostCategories
                 .FirstOrDefaultAsync(m => m.CategoryId == id);
-            if (category == null)
+            if (postCategory == null)
             {
                 return NotFound();
             }
 
-            return View(category);
+            return View(postCategory);
         }
 
-        // GET: Categories/Create
+        // GET: PostCategories/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Categories/Create
+        // POST: PostCategories/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CategoryId,CategoryName,Description")] Category category)
+        public async Task<IActionResult> Create([Bind("CategoryId,CategoryName,Description")] PostCategory postCategory)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(category);
+                _context.Add(postCategory);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(category);
+            return View(postCategory);
         }
 
-        // GET: Categories/Edit/5
+        // GET: PostCategories/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -72,22 +69,22 @@ namespace Ass03Solution_NguyenTuanKhai_SE151228.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Categories.FindAsync(id);
-            if (category == null)
+            var postCategory = await _context.PostCategories.FindAsync(id);
+            if (postCategory == null)
             {
                 return NotFound();
             }
-            return View(category);
+            return View(postCategory);
         }
 
-        // POST: Categories/Edit/5
+        // POST: PostCategories/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CategoryId,CategoryName,Description")] Category category)
+        public async Task<IActionResult> Edit(int id, [Bind("CategoryId,CategoryName,Description")] PostCategory postCategory)
         {
-            if (id != category.CategoryId)
+            if (id != postCategory.CategoryId)
             {
                 return NotFound();
             }
@@ -96,12 +93,12 @@ namespace Ass03Solution_NguyenTuanKhai_SE151228.Controllers
             {
                 try
                 {
-                    _context.Update(category);
+                    _context.Update(postCategory);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CategoryExists(category.CategoryId))
+                    if (!PostCategoryExists(postCategory.CategoryId))
                     {
                         return NotFound();
                     }
@@ -112,10 +109,10 @@ namespace Ass03Solution_NguyenTuanKhai_SE151228.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(category);
+            return View(postCategory);
         }
 
-        // GET: Categories/Delete/5
+        // GET: PostCategories/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -123,30 +120,30 @@ namespace Ass03Solution_NguyenTuanKhai_SE151228.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Categories
+            var postCategory = await _context.PostCategories
                 .FirstOrDefaultAsync(m => m.CategoryId == id);
-            if (category == null)
+            if (postCategory == null)
             {
                 return NotFound();
             }
 
-            return View(category);
+            return View(postCategory);
         }
 
-        // POST: Categories/Delete/5
+        // POST: PostCategories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var category = await _context.Categories.FindAsync(id);
-            _context.Categories.Remove(category);
+            var postCategory = await _context.PostCategories.FindAsync(id);
+            _context.PostCategories.Remove(postCategory);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CategoryExists(int id)
+        private bool PostCategoryExists(int id)
         {
-            return _context.Categories.Any(e => e.CategoryId == id);
+            return _context.PostCategories.Any(e => e.CategoryId == id);
         }
     }
 }
