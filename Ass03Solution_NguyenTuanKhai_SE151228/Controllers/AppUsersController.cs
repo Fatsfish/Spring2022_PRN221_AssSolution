@@ -6,22 +6,31 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Ass03Solution_NguyenTuanKhai_SE151228.Models;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Ass03Solution_NguyenTuanKhai_SE151228.Controllers
 {
     public class AppUsersController : Controller
     {
         private readonly SignalRAssignmentDB03Context _context;
-
-        public AppUsersController(SignalRAssignmentDB03Context context)
+        private readonly IHubContext<SignalrServer> _signalRHub;
+        public AppUsersController(SignalRAssignmentDB03Context context, IHubContext<SignalrServer> signalRHub)
         {
             _context = context;
+            _signalRHub = signalRHub;
         }
 
         // GET: AppUsers
         public async Task<IActionResult> Index()
         {
             return View(await _context.AppUsers.ToListAsync());
+        }
+
+        [HttpGet]
+        public IActionResult GetAppUsers()
+        {
+            var res = _context.AppUsers.ToList();
+            return Ok(res);
         }
 
         // GET: AppUsers/Details/5
@@ -59,6 +68,7 @@ namespace Ass03Solution_NguyenTuanKhai_SE151228.Controllers
             {
                 _context.Add(appUser);
                 await _context.SaveChangesAsync();
+                await _signalRHub.Clients.All.SendAsync("LoadAppUsers");
                 return RedirectToAction(nameof(Index));
             }
             return View(appUser);
@@ -98,6 +108,7 @@ namespace Ass03Solution_NguyenTuanKhai_SE151228.Controllers
                 {
                     _context.Update(appUser);
                     await _context.SaveChangesAsync();
+                    await _signalRHub.Clients.All.SendAsync("LoadAppUsers");
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -141,6 +152,7 @@ namespace Ass03Solution_NguyenTuanKhai_SE151228.Controllers
             var appUser = await _context.AppUsers.FindAsync(id);
             _context.AppUsers.Remove(appUser);
             await _context.SaveChangesAsync();
+            await _signalRHub.Clients.All.SendAsync("LoadAppUsers");
             return RedirectToAction(nameof(Index));
         }
 
