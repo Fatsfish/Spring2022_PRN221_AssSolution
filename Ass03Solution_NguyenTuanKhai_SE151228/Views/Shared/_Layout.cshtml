@@ -24,6 +24,36 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="AppUsers" asp-action="Index">Users</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="PostCategories" asp-action="Index">Categories</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Posts" asp-action="Index">Posts</a>
+                        </li>
+                        @if (@HttpContextAccessor.HttpContext.Session.GetString("name") == null && @HttpContextAccessor.HttpContext.Session.GetInt32("id") == null)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" href='/Home'>Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" href='/Home/Create'>Register</a>
+                            </li>
+                        }
+                        @if (@HttpContextAccessor.HttpContext.Session.GetString("name") != null)
+                        {
+                            var t = @HttpContextAccessor.HttpContext.Session.GetString("name");
+                            <a class="nav-link text-dark" href'/appusers/Edit/@HttpContextAccessor.HttpContext.Session.GetInt32("id")'>Welcome @t</a>
+                            <a class="nav-link text-dark" href='../home/Logout'>Logout</a>
+                        }
+                        @if (@HttpContextAccessor.HttpContext.Session.GetString("name") == null && @HttpContextAccessor.HttpContext.Session.GetInt32("id") != null)
+                        {
+                            var t = @HttpContextAccessor.HttpContext.Session.GetInt32("id");
+                            <a class="nav-link text-dark" href'/appusers/Edit/@HttpContextAccessor.HttpContext.Session.GetInt32("id")'>Welcome user with id @t</a>
+                            <a class="nav-link text-dark" href='../home/Logout'>Logout</a>
+                        }
                     </ul>
                 </div>
             </div>
@@ -37,10 +67,15 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2022 - Ass03Solution_NguyenTuanKhai_SE151228 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2022 - Ass03Solution_NguyenTuanKhai_SE151228 - <a asp-area="" asp-controller="Home" asp-action="Privacy">SignalR</a>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <script src="~/microsoft/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/site.js"></script>
+
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)

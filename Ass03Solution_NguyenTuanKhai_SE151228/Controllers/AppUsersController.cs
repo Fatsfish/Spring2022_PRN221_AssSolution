@@ -6,27 +6,41 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Ass03Solution_NguyenTuanKhai_SE151228.Models;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.Http;
 
 namespace Ass03Solution_NguyenTuanKhai_SE151228.Controllers
 {
     public class AppUsersController : Controller
     {
         private readonly SignalRAssignmentDB03Context _context;
-
-        public AppUsersController(SignalRAssignmentDB03Context context)
+        private readonly IHubContext<SignalrServer> _signalRHub;
+        public AppUsersController(SignalRAssignmentDB03Context context, IHubContext<SignalrServer> signalRHub)
         {
             _context = context;
+            _signalRHub = signalRHub;
         }
 
         // GET: AppUsers
         public async Task<IActionResult> Index()
         {
+            if (HttpContext.Session.GetInt32("id") == null) { HttpContext.Session.SetString("error", "Please login first to access!"); return Redirect("/"); }
             return View(await _context.AppUsers.ToListAsync());
+        }
+
+        [HttpGet]
+        public IActionResult GetAppUsers()
+        {
+            if (HttpContext.Session.GetInt32("id") == null) { HttpContext.Session.SetString("error", "Please login first to access!"); return Redirect("/"); }
+            var res = _context.AppUsers.ToList();
+            return Ok(res);
         }
 
         // GET: AppUsers/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            if (HttpContext.Session.GetInt32("id") == null) { HttpContext.Session.SetString("error","Please login first to access!"); return Redirect("/"); }
+
             if (id == null)
             {
                 return NotFound();
@@ -45,6 +59,8 @@ namespace Ass03Solution_NguyenTuanKhai_SE151228.Controllers
         // GET: AppUsers/Create
         public IActionResult Create()
         {
+            if (HttpContext.Session.GetInt32("id") == null) { HttpContext.Session.SetString("error", "Please login first to access!"); return Redirect("/"); }
+
             return View();
         }
 
@@ -55,10 +71,13 @@ namespace Ass03Solution_NguyenTuanKhai_SE151228.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("UserId,FullName,Address,Password,Email")] AppUser appUser)
         {
+            if (HttpContext.Session.GetInt32("id") == null) { HttpContext.Session.SetString("error", "Please login first to access!"); return Redirect("/"); }
+
             if (ModelState.IsValid)
             {
                 _context.Add(appUser);
                 await _context.SaveChangesAsync();
+                await _signalRHub.Clients.All.SendAsync("LoadAppUsers");
                 return RedirectToAction(nameof(Index));
             }
             return View(appUser);
@@ -67,6 +86,8 @@ namespace Ass03Solution_NguyenTuanKhai_SE151228.Controllers
         // GET: AppUsers/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            if (HttpContext.Session.GetInt32("id") == null) { HttpContext.Session.SetString("error", "Please login first to access!"); return Redirect("/"); }
+
             if (id == null)
             {
                 return NotFound();
@@ -87,6 +108,8 @@ namespace Ass03Solution_NguyenTuanKhai_SE151228.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("UserId,FullName,Address,Password,Email")] AppUser appUser)
         {
+            if (HttpContext.Session.GetInt32("id") == null) { HttpContext.Session.SetString("error", "Please login first to access!"); return Redirect("/"); }
+
             if (id != appUser.UserId)
             {
                 return NotFound();
@@ -98,6 +121,7 @@ namespace Ass03Solution_NguyenTuanKhai_SE151228.Controllers
                 {
                     _context.Update(appUser);
                     await _context.SaveChangesAsync();
+                    await _signalRHub.Clients.All.SendAsync("LoadAppUsers");
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -118,6 +142,8 @@ namespace Ass03Solution_NguyenTuanKhai_SE151228.Controllers
         // GET: AppUsers/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            if (HttpContext.Session.GetInt32("id") == null) { HttpContext.Session.SetString("error", "Please login first to access!"); return Redirect("/"); }
+
             if (id == null)
             {
                 return NotFound();
@@ -138,9 +164,12 @@ namespace Ass03Solution_NguyenTuanKhai_SE151228.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            if (HttpContext.Session.GetInt32("id") == null) { HttpContext.Session.SetString("error", "Please login first to access!"); return Redirect("/"); }
+
             var appUser = await _context.AppUsers.FindAsync(id);
             _context.AppUsers.Remove(appUser);
             await _context.SaveChangesAsync();
+            await _signalRHub.Clients.All.SendAsync("LoadAppUsers");
             return RedirectToAction(nameof(Index));
         }
 
